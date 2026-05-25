@@ -6,7 +6,7 @@ import {
   Typography,
   Button,
   Container,
-  Grid,
+  Box,
 } from "@mui/material";
 import { useCart, type Product } from "../context/CartContext";
 
@@ -25,11 +25,31 @@ const ProductList: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Products
       </Typography>
-      <Grid container spacing={3}>
+      
+      {/* Grid properties moved inside sx={{}} to resolve 
+        the TypeScript Overload error 
+      */}
+      <Box 
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { 
+            xs: '1fr', 
+            sm: 'repeat(2, 1fr)', 
+            md: 'repeat(4, 1fr)' 
+          },
+          gap: 3
+        }}
+      >
         {DUMMY_PRODUCTS.map((product) => (
-          <Grid item xs={12} sm={6} md={3} key={product.id}>
-            <Card>
-              <CardContent>
+          <Box key={product.id}>
+            <Card 
+              sx={{ 
+                height: "100%", 
+                display: "flex", 
+                flexDirection: "column" 
+              }}
+            >
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6">{product.name}</Typography>
                 <Typography color="text.secondary">
                   ${product.price.toFixed(2)}
@@ -48,9 +68,9 @@ const ProductList: React.FC = () => {
                 </Button>
               </CardActions>
             </Card>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Container>
   );
 };
